@@ -1,32 +1,39 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8000',
-        changeOrigin: true,
+declare const process: { cwd: () => string };
+
+export default defineConfig(({ mode }) => {
+  const API_URL = loadEnv(mode, process.cwd()).VITE_API_URL;
+
+  return {
+    plugins: [react()],
+    server: {
+      port: 3000,
+      proxy: {
+        '/api': {
+          target: API_URL,
+          changeOrigin: true,
+        },
+        '/health': {
+          target: API_URL,
+          changeOrigin: true,
+        },
       },
-      '/health': {
-        target: 'http://localhost:8000',
-        changeOrigin: true,
-      }
-    }
-  },
-  preview: {
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8000',
-        changeOrigin: true,
+    },
+    preview: {
+      port: 3000,
+      proxy: {
+        '/api': {
+          target: API_URL,
+          changeOrigin: true,
+        },
+        '/health': {
+          target: API_URL,
+          changeOrigin: true,
+        },
       },
-      '/health': {
-        target: 'http://localhost:8000',
-        changeOrigin: true,
-      }
-    }
-  }
+    },
+  };
 });
+
