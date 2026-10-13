@@ -1,0 +1,4 @@
+/api/*  http://3.107.18.198:8000/api/:splat  200!
+/health/*  http://3.107.18.198:8000/health/:splat  200!
+/*  /index.html  200
+
