@@ -4,7 +4,8 @@ import react from '@vitejs/plugin-react';
 declare const process: { cwd: () => string };
 
 export default defineConfig(({ mode }) => {
-  const API_URL = loadEnv(mode, process.cwd()).API_URL;
+  const env = loadEnv(mode, process.cwd(),'')
+  const API_URL=env.API_URL;
 
   return {
     plugins: [react()],
